@@ -10,6 +10,8 @@ import java.util.List;
 @Entity
 @Table(name = "employees")
 public class Employee {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,35 +23,43 @@ public class Employee {
     @Column(name = "employeeNumber")
     int employeeNumber;
 
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
     @ManyToOne
     @JoinColumn(name = "department_id", nullable = false)
     @JsonIgnoreProperties({"employees"})
     private Department department;
 
-//    @ManyToMany
-//    @JsonIgnoreProperties({"employees"})
-//    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-//    @JoinTable(
-//            name = "employees_projects",
-//            joinColumns = { @JoinColumn(
-//                    name = "employees_id",
-//                    nullable = false,
-//                    updatable = false)
-//            },
-//            inverseJoinColumns = { @JoinColumn(
-//                    name = "project_id",
-//                    nullable = false,
-//                    updatable = false)
-//            }
-//    )
-//    List<Project> projects;
+    @ManyToMany
+    @JsonIgnoreProperties({"employees"})
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @JoinTable(
+            name = "employees_projects",
+            joinColumns = { @JoinColumn(
+                    name = "employee_id",
+                    nullable = false,
+                    updatable = false)
+            },
+            inverseJoinColumns = { @JoinColumn(
+                    name = "project_id",
+                    nullable = false,
+                    updatable = false)
+            }
+    )
+    List<Project> projects;
 
     public Employee(String firstName, String lastName, int employeeNumber, Department department) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.employeeNumber = employeeNumber;
         this.department = department;
-//        this.projects = new ArrayList<Project>();
+        this.projects = new ArrayList<Project>();
     }
 
     public Employee(){
@@ -80,11 +90,19 @@ public class Employee {
         this.employeeNumber = employeeNumber;
     }
 
-//    public List<Project> getProjects() {
-//        return projects;
-//    }
-//
-//    public void setProjects(List<Project> projects) {
-//        this.projects = projects;
-//    }
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

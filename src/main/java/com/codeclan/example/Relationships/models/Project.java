@@ -10,6 +10,14 @@ import java.util.List;
 @Entity
 @Table(name = "projects")
 public class Project {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,12 +33,12 @@ public class Project {
     @JoinTable(
             name = "employees_projects",
             joinColumns = { @JoinColumn(
-                    name = "projects_id",
+                    name = "project_id",
                     nullable = false,
                     updatable = false)
             },
             inverseJoinColumns = { @JoinColumn(
-                    name = "employees_id",
+                    name = "employee_id",
                     nullable = false,
                     updatable = false)
             })
@@ -68,5 +76,9 @@ public class Project {
 
     public void setEmployees(List<Employee> employees) {
         this.employees = employees;
+    }
+
+    public void addEmployee(Employee emp) {
+        employees.add(emp);
     }
 }
